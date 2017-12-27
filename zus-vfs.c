@@ -17,6 +17,7 @@
 
 #include "zus.h"
 #include "zuf_call.h"
+#include "toyfs.h"
 
 /* ~~~ wrappers ~~~ to call the proper fs function pointer */
 static
@@ -574,7 +575,7 @@ int zus_register_one(int fd, struct zus_fs_info *zfi)
 /* TODO: We need some registry of all fss to load */
 int zus_register_all(int fd)
 {
-	return foofs_register_fs(fd);
+	return toyfs_register_fs(fd);
 }
 
 /* ~~~ STUFF MOVE TO NEW FILE ~~~ */

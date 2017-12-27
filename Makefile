@@ -64,10 +64,10 @@ CFLAGS = -fPIC -pthread -std=gnu11 $(CONFIG_CFLAGS)	\
 CFLAGS += "-DKERNEL=0"
 
 # List of -L -l libs
-C_LIBS = -lrt -lcurses -lc $(CONFIG_C_LIBS)
+C_LIBS = -lrt -lcurses -lc -luuid $(CONFIG_C_LIBS)
 
 # Targets
-ALL = zus
+ALL = zus mkfs.toyfs
 all: $(DEPEND) $(ALL)
 
 clean:
@@ -78,12 +78,21 @@ ZUS_API_H=zus_api.h
 $(ZUS_API_H):
 	ln -sTf $(abspath $(ZUS_API_INC)) $(ZUS_API_H)
 # ============== zus ===========================================================
-zus_OBJ = zus-core.o zus-vfs.o main.o module.o foofs.o
+zus_OBJ = zus-core.o zus-vfs.o main.o module.o foofs.o toyfs.o
 
 zus:  $(zus_OBJ)
 	$(CC) $(LDFLAGS) $(CFLAGS) $(C_LIBS) -o $@ $^
 
 $(DEPEND): $(zus_OBJ:.o=.c)
+
+# ============== toyfs-progs====================================================
+toyfs_mkfs_OBJ=toyfs-mkfs.o
+
+mkfs.toyfs:  $(toyfs_mkfs_OBJ)
+	$(CC) $(LDFLAGS) $(CFLAGS) $(C_LIBS) -o $@ $^
+
+$(DEPEND): $(toyfs_mkfs_OBJ:.o=.c)
+
 
 # =============== common rules =================================================
 # every thing should compile if Makefile or .config changed

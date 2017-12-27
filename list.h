@@ -52,7 +52,12 @@ static inline void list_del_init(struct list_head *entry)
 }
 static inline int list_empty(const struct list_head *head)
 {
-	return  (head->next == NULL) | (head->next == head);
+	return  (head->next == head);
+}
+
+static inline void list_add_tail(struct list_head *new, struct list_head *head)
+{
+       _list_add(new, head->prev, head);
 }
 
 #ifndef offsetof
