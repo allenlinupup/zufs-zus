@@ -10,4 +10,4 @@
 #	Shachar Sharon <sshachar@netapp.com>
 #
 
-fs_builtin=fs/foofs.o
+fs_builtin+=fs/foofs.o

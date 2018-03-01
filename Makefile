@@ -68,7 +68,7 @@ C_LIBS = -lrt -lcurses -lc $(CONFIG_C_LIBS)
 
 # Targets
 ALL = zus
-all: $(DEPEND) $(ALL)
+all: $(DEPEND) $(ALL) fs_progs
 
 clean:
 	rm -vf $(DEPEND) $(ALL)  *.o
@@ -79,7 +79,11 @@ $(ZUS_API_H):
 	ln -sTf $(abspath $(ZUS_API_INC)) $(ZUS_API_H)
 
 # ============== sub-projects===================================================
+FS_PROGS=$(NULL)
+fs_builtin=$(NULL)
 -include fs/Makefile
+fs_progs: $(FS_PROGS)
+
 
 # ============== zus ===========================================================
 zus_OBJ = zus-core.o zus-vfs.o main.o module.o $(fs_builtin)
