@@ -495,7 +495,20 @@ int zus_register_one(int fd, struct zus_fs_info *zfi)
 /* TODO: We need some registry of all fss to load */
 int zus_register_all(int fd)
 {
-	return toyfs_register_fs(fd);
+	int err;
+
+	err = foofs_register_fs(fd);
+	if (err) {
+		ERROR("foofs_register_fs=>%d\n", err);
+		return err;
+	}
+
+	err  = toyfs_register_fs(fd);
+	if (err) {
+		ERROR("foofs_register_fs=>%d\n", err);
+		return err;
+	}
+	return 0;
 }
 
 /* ~~~ STUFF MOVE TO NEW FILE ~~~ */
