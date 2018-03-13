@@ -64,14 +64,16 @@ CFLAGS = -fPIC -pthread -std=gnu11 $(CONFIG_CFLAGS)	\
 CFLAGS += "-DKERNEL=0"
 
 # List of -L -l libs
-C_LIBS = -lrt -lcurses -lc $(CONFIG_C_LIBS)
+C_LIBS = -lrt -lcurses -lc -luuid $(CONFIG_C_LIBS)
 
 # Targets
 ALL = zus
 all: $(DEPEND) $(ALL) fs_progs
 
-clean:
-	rm -vf $(DEPEND) $(ALL)  *.o
+clean: clean_subs
+	rm -vf $(DEPEND) $(ALL)
+	find $(ROOT) -type f -name '*.o' -exec rm -vf {} \;
+
 # =========== Headers from the running Kernel ==================================
 ZUS_API_H=zus_api.h
 
@@ -82,7 +84,12 @@ $(ZUS_API_H):
 FS_PROGS=$(NULL)
 fs_builtin=$(NULL)
 -include fs/Makefile
+-include fs/toyfs/Makefile
+
 fs_progs: $(FS_PROGS)
+
+clean_subs:
+	rm -vf $(fs_builtin) $(FS_PROGS)
 
 
 # ============== zus ===========================================================
